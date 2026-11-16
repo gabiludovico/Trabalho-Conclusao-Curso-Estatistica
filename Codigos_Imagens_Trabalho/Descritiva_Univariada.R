@@ -761,6 +761,21 @@ ggplot(km_data, aes(x = time, y = surv, color = strata)) +
     legend.title = element_blank()
   )
 
+# tabela_prop_tempo
+
+tabela_prop <- dados %>%
+  filter(ADOPT == 1) %>%
+  mutate(
+    Periodo = ifelse(ANO < 2013, "Antes 2013", "Depois 2013")
+  ) %>%
+  count(POL_ABV, Periodo) %>%
+  group_by(POL_ABV) %>%
+  mutate(
+    Porcentagem = n / sum(n) * 100
+  ) %>%
+  ungroup()
+
+tabela_prop
 
 
 # boxplot TX_PARTC
@@ -1142,7 +1157,9 @@ ggplot(
 
 
 # quadro de medidas ORC_TOTAL_TX
-
+dados_pnaacto <- dados_pnaacto %>%
+  filter(ADOPT == 1)
+  
 tabela_orc <- dados_conjunto %>%
   group_by(POL_ABV, ADOPT) %>%
   summarise(
